@@ -16,20 +16,14 @@ const BASE_MAX_HEALTH := 6;
 const HURT_TIME := .75;
 const INVULN_TIME := 2.0;
 
-# How long each attack is
-# How long must a state wait before the next attack can happen
-# < 0 = cannot attack
-# 0 = can attack without delay
-# > 0 = attack with delay after
-var ATTACK_TIMING = {
-  Enums.CHAR_STATES.INIT: -1.0,
-  Enums.CHAR_STATES.FREE: 0.0,
-  Enums.CHAR_STATES.ROLLING: -1.0,
-  Enums.CHAR_STATES.PICKING_UP: -1.0,
-  Enums.CHAR_STATES.SWORD_1: 0.2,
-  Enums.CHAR_STATES.SWORD_2: 0.3,
-  Enums.CHAR_STATES.USE_ITEM: 0.3,
-  Enums.CHAR_STATES.HURT: -1.0
+const ACTION_RULES = {
+  Enums.CHAR_STATES.FREE:       {move = 1.0, turn = true,  roll = true, jump = true, gravity = 1.0, interrupt_after = 0.0, cancel_after = 0.0},
+  Enums.CHAR_STATES.ROLLING:    {move = 0.0, turn = false, roll = false, jump = false, gravity = 1.0, interrupt_after = -1.0, cancel_after = -1.0},
+  Enums.CHAR_STATES.SWORD_1:    {move = 0.3, turn = false, roll = true, jump = true, gravity = 0.4, interrupt_after = 0.1, cancel_after = 0.2},
+  Enums.CHAR_STATES.SWORD_2:    {move = 0.3, turn = false, roll = true, jump = true, gravity = 0.4, interrupt_after = 0.2, cancel_after = 0.3},
+  Enums.CHAR_STATES.USE_ITEM:   {move = 0.5, turn = true,  roll = true, jump = false, gravity = 1.0, interrupt_after = -1.0, cancel_after = 0.3},
+  Enums.CHAR_STATES.PICKING_UP: {move = 0.0, turn = false, roll = false, jump = false, gravity = 1.0, interrupt_after = -1.0, cancel_after = -1.0},
+  Enums.CHAR_STATES.HURT:       {move = 0.0, turn = false, roll = false, jump = false, gravity = 1.0, interrupt_after = -1.0, cancel_after = HURT_TIME},
 }
 #endregion
 
