@@ -47,7 +47,7 @@ func _process_movement(delta: float) -> void:
   var adjusted_move_speed := CharStats.WALK_SPEED;
   # do not include y so that it's not adjusted by move speed
   # TODO: Interpolate
-  _move_vector = Vector3(_in_move.y, 0.0, _in_move.x).normalized() * adjusted_move_speed;
+  _move_vector = Vector3(_in_move.x, 0.0, _in_move.y).normalized() * adjusted_move_speed;
   _move_vector.y = velocity.y;
 
   velocity = _move_vector;
@@ -60,7 +60,7 @@ func _process_movement(delta: float) -> void:
 
   if(!_in_move.is_zero_approx()):
     # TODO: Interpolate
-    var facing_point = global_position + Vector3(_in_move.y, 0.0, _in_move.x);
+    var facing_point = global_position + Vector3(_in_move.x, 0.0, _in_move.y);
     look_at(facing_point, Vector3.UP);
   #/if
 #/_process_movement

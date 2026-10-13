@@ -185,23 +185,26 @@ func process_action_state(player: int) -> void:
 
   player_prev_action_state = player_cur_action_state.duplicate();
 
-  var movement_x = clampf(get_axis(player, INPUTS.MOVE_UP_KEYBOARD, INPUTS.MOVE_DOWN_KEYBOARD) + get_axis(player, INPUTS.MOVE_UP_GAMEPAD, INPUTS.MOVE_DOWN_GAMEPAD), -1.0, 1.0);
-  var movement_y = clampf(get_axis(player, INPUTS.MOVE_LEFT_KEYBOARD, INPUTS.MOVE_RIGHT_KEYBOARD) + get_axis(player, INPUTS.MOVE_LEFT_GAMEPAD, INPUTS.MOVE_RIGHT_GAMEPAD), -1.0, 1.0);
+  var movement_x = clampf(get_axis(player, INPUTS.MOVE_LEFT_KEYBOARD, INPUTS.MOVE_RIGHT_KEYBOARD) + get_axis(player, INPUTS.MOVE_LEFT_GAMEPAD, INPUTS.MOVE_RIGHT_GAMEPAD), -1.0, 1.0);
+  var movement_y = clampf(get_axis(player, INPUTS.MOVE_UP_KEYBOARD, INPUTS.MOVE_DOWN_KEYBOARD) + get_axis(player, INPUTS.MOVE_UP_GAMEPAD, INPUTS.MOVE_DOWN_GAMEPAD), -1.0, 1.0);
   player_cur_action_state[ACTIONS.MOVE] = Vector2(movement_x, movement_y);
 
   var attack_pressed = is_action_pressed(player, INPUTS.ATTACK_KEYBOARD) || is_action_pressed(player, INPUTS.ATTACK_GAMEPAD);
+  var roll_pressed = is_action_pressed(player, INPUTS.ROLL_KEYBOARD) || is_action_pressed(player, INPUTS.ROLL_GAMEPAD);
   var interact_pressed = is_action_pressed(player, INPUTS.INTERACT_KEYBOARD) || is_action_pressed(player, INPUTS.INTERACT_GAMEPAD);
   var use_item_pressed = is_action_pressed(player, INPUTS.USE_ITEM_KEYBOARD) || is_action_pressed(player, INPUTS.USE_ITEM_GAMEPAD);
   var next_item_pressed = is_action_pressed(player, INPUTS.NEXT_ITEM_KEYBOARD) || is_action_pressed(player, INPUTS.NEXT_ITEM_GAMEPAD);
   var prev_item_pressed = is_action_pressed(player, INPUTS.PREV_ITEM_KEYBOARD) || is_action_pressed(player, INPUTS.PREV_ITEM_GAMEPAD);
 
   player_cur_action_state[ACTIONS.ATTACK] = attack_pressed;
+  player_cur_action_state[ACTIONS.ROLL] = roll_pressed;
   player_cur_action_state[ACTIONS.INTERACT] = interact_pressed;
   player_cur_action_state[ACTIONS.USE_ITEM] = use_item_pressed;
   player_cur_action_state[ACTIONS.NEXT_ITEM] = next_item_pressed;
   player_cur_action_state[ACTIONS.PREV_ITEM] = prev_item_pressed;
 
   player_just_pressed_action_state[ACTIONS.ATTACK] = attack_pressed && !player_prev_action_state[ACTIONS.ATTACK];
+  player_just_pressed_action_state[ACTIONS.ROLL] = roll_pressed && !player_prev_action_state[ACTIONS.ROLL];
   player_just_pressed_action_state[ACTIONS.INTERACT] = interact_pressed && !player_prev_action_state[ACTIONS.INTERACT];
   player_just_pressed_action_state[ACTIONS.USE_ITEM] = use_item_pressed && !player_prev_action_state[ACTIONS.USE_ITEM];
   player_just_pressed_action_state[ACTIONS.NEXT_ITEM] = next_item_pressed && !player_prev_action_state[ACTIONS.NEXT_ITEM];
@@ -315,9 +318,8 @@ func get_axis(player: int, negative_action: INPUTS, positive_action: INPUTS) -> 
   elif neg_event is InputEventJoypadButton && player_device.type == Enums.INPUT_SOURCES.CONTROLLER:
     neg_value =  -1.0 if Input.is_joy_button_pressed(player_device.device_id, neg_event.button_index) else 0.0;
   elif neg_event is InputEventJoypadMotion && player_device.type == Enums.INPUT_SOURCES.CONTROLLER:
-    var axis_val := Input.get_joy_axis(player_device.device_id, player_input_map[negative_action].axis);
-    var neg_axis : InputEventJoypadMotion = neg_event;
-    neg_value = axis_val if sign(axis_val) == sign(neg_axis.axis_value) && abs(axis_val) >= Settings.stick_deadzone else 0.0;
+    var axis_val := Input.get_joy_axis(player_device.device_id, neg_event.axis);
+    neg_value = axis_val if sign(axis_val) == sign(neg_event.axis_value) && abs(axis_val) >= Settings.stick_deadzone else 0.0;
   #/if
 
   if pos_event is InputEventKey && player_device.type == Enums.INPUT_SOURCES.KEYBOARD:
@@ -325,9 +327,8 @@ func get_axis(player: int, negative_action: INPUTS, positive_action: INPUTS) -> 
   elif pos_event is InputEventJoypadButton && player_device.type == Enums.INPUT_SOURCES.CONTROLLER:
     pos_value =  1.0 if Input.is_joy_button_pressed(player_device.device_id, pos_event.button_index) else 0.0;
   elif pos_event is InputEventJoypadMotion && player_device.type == Enums.INPUT_SOURCES.CONTROLLER:
-    var axis_val := Input.get_joy_axis(player_device.device_id, player_input_map[negative_action].axis);
-    var pos_axis : InputEventJoypadMotion = pos_event;
-    pos_value = axis_val if sign(axis_val) == sign(pos_axis.axis_value) && abs(axis_val) >= Settings.stick_deadzone else 0.0;
+    var axis_val := Input.get_joy_axis(player_device.device_id, pos_event.axis);
+    pos_value = axis_val if sign(axis_val) == sign(pos_event.axis_value) && abs(axis_val) >= Settings.stick_deadzone else 0.0;
   #/if
   return pos_value + neg_value;
 #/get_axis

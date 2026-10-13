@@ -2,16 +2,12 @@ extends Node
 
 enum CHAR_STATES {
   INIT,
-  IDLE,
-  RUNNING,
+  FREE,
   ROLLING,
-  JUMPING,
-  FALLING,
   PICKING_UP,
   SWORD_1,
   SWORD_2,
-  BOW,
-  BOMB,
+  USE_ITEM,
   HURT
 }
 

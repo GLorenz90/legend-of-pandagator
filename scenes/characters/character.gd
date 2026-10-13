@@ -27,7 +27,7 @@ func _physics_process(_delta: float) -> void:
 
 #region PRIVATE ====================================================================================
 func _is_interrupted() -> bool:
-  return !($InterruptTimer.is_stopped()) && !($HurtTimer.is_stopped());
+  return !($InterruptTimer.is_stopped()) || !($HurtTimer.is_stopped());
 #/_is_interrupted
 
 func _damage_recoil(_damage_location: Vector3) -> void:

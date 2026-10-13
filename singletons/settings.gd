@@ -46,7 +46,7 @@ func loadSettingsFile():
 
     antialiasing = config.get_value("visual", "antialiasing", defaultAntialiasing);
 
-    antialiasing = config.get_value("input", "stick_deadzone", default_stick_deadzone);
+    stick_deadzone = config.get_value("input", "stick_deadzone", default_stick_deadzone);
     updateAudioBusses();
   #/if
 #/loadSettingsFile

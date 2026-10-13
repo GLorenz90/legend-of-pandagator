@@ -21,19 +21,15 @@ const INVULN_TIME := 2.0;
 # < 0 = cannot attack
 # 0 = can attack without delay
 # > 0 = attack with delay after
-const ATTACK_TIMING = {
+var ATTACK_TIMING = {
   Enums.CHAR_STATES.INIT: -1.0,
-  Enums.CHAR_STATES.IDLE: 0.0,
-  Enums.CHAR_STATES.RUNNING: 0.0,
+  Enums.CHAR_STATES.FREE: 0.0,
   Enums.CHAR_STATES.ROLLING: -1.0,
-  Enums.CHAR_STATES.JUMPING: 0.0,
-  Enums.CHAR_STATES.FALLING: 0.0,
   Enums.CHAR_STATES.PICKING_UP: -1.0,
   Enums.CHAR_STATES.SWORD_1: 0.2,
   Enums.CHAR_STATES.SWORD_2: 0.3,
-  Enums.CHAR_STATES.BOW: 0.3,
-  Enums.CHAR_STATES.BOMB: 0.3,
-  Enums.CHAR_STATES.HURT: -1.0,
+  Enums.CHAR_STATES.USE_ITEM: 0.3,
+  Enums.CHAR_STATES.HURT: -1.0
 }
 #endregion
 
