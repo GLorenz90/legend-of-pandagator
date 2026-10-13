@@ -3,10 +3,11 @@ class_name Character;
 
 #region PRIVATE VARS =============================================================
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity");
-var _max_health := 1;
-var _cur_health := 1:
+@export var _max_health := 1;
+@export var _cur_health := 1:
   set(value):
     _cur_health = clampi(value, 0, _max_health);
+@export var _invulnerable = false;
 #endregion
 
 #region PUBLIC VARS =============================================================
@@ -26,11 +27,7 @@ func _physics_process(_delta: float) -> void:
 #endregion =========================================================================================
 
 #region PRIVATE ====================================================================================
-func _is_interrupted() -> bool:
-  return !($InterruptTimer.is_stopped()) || !($HurtTimer.is_stopped());
-#/_is_interrupted
-
-func _damage_recoil(_damage_location: Vector3) -> void:
+func _handle_damage(from_location := Vector3.FORWARD) -> void:
   #override me
   pass
 #/_damage_recoil()
@@ -43,10 +40,9 @@ func _die():
 
 #region PUBLIC =====================================================================================
 func damage(value: int, from_location := Vector3.FORWARD) -> void:
-  if($InvulnTimer.is_stopped()):
+  if($InvulnTimer.is_stopped() && !_invulnerable):
     _cur_health -= value;
-    _damage_recoil(from_location);
-    $HurtTimer.start();
+    _handle_damage(from_location);
     $InvulnTimer.start();
   #/if
 #/damage

@@ -7,7 +7,6 @@ const MAX_INPUT_BUFFER_TIME := 0.2;
 
 const BASE_WALK_SPEED := 6;
 const BASE_ROLL_SPEED := 12.0;
-const BASE_ROLL_TIME := 0.4;
 const BASE_JUMP_TIME := 0.08;
 const BASE_JUMP_VELOCITY := 200.0;
 const BASE_HURT_VELOCITY := 150.0;
@@ -15,6 +14,8 @@ const BASE_MAX_HEALTH := 6;
 
 const HURT_TIME := .75;
 const INVULN_TIME := 2.0;
+const HURT_KNOCKBACK_SPEED := 8.0;
+const ROLL_TIME := 0.5;
 
 var ACTION_RULES = {
   # Free action rules, these can interrupt each other sometimes, and interact with each other
@@ -33,7 +34,6 @@ var ACTION_RULES = {
 # These should always start at 0 on new game.
 var ADJUST_WALK_SPEED := 0.0;
 var ADJUST_ROLL_SPEED := 0.0;
-var ADJUST_ROLL_TIME := 0.0;
 var ADJUST_JUMP_TIME := 0.0;
 var ADJUST_JUMP_VELOCITY := 0.0;
 var ADJUST_MAX_HEALTH := 0;
@@ -42,8 +42,6 @@ var WALK_SPEED: float:
   get: return BASE_WALK_SPEED + ADJUST_WALK_SPEED;
 var ROLL_SPEED: float:
   get: return BASE_ROLL_SPEED + ADJUST_ROLL_SPEED;
-var ROLL_TIME: float:
-  get: return BASE_ROLL_TIME + ADJUST_ROLL_TIME;
 var JUMP_TIME: float:
   get: return BASE_JUMP_TIME + ADJUST_JUMP_TIME;
 var JUMP_VELOCITY: float:
