@@ -7,7 +7,6 @@ enum CHAR_STATES {
   PICKING_UP,
   SWORD_1,
   SWORD_2,
-  USE_ITEM,
   HURT
 }
 
