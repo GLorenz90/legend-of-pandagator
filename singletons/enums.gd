@@ -4,7 +4,7 @@ enum CHAR_STATES {
   INIT,
   FREE,
   ROLLING,
-  PICKING_UP,
+  INTERACT,
   SWORD_1,
   SWORD_2,
   HURT

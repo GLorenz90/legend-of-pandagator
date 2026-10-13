@@ -24,7 +24,7 @@ var ACTION_RULES = {
   Enums.CHAR_STATES.SWORD_2:    { move = 0.3, ground_only = false, turn = false, attack = false, roll = true, jump = true, gravity = 0.4, interrupt_after = 0.2, cancel_after = 0.3 },
   # Special states with their own rules to enter and exit
   Enums.CHAR_STATES.INIT:       { move = 0.0, ground_only = false, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
-  Enums.CHAR_STATES.PICKING_UP: { move = 0.0, ground_only = true, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
+  Enums.CHAR_STATES.INTERACT: { move = 0.0, ground_only = true, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
   Enums.CHAR_STATES.HURT:       { move = 0.0, ground_only = false, turn = false, attack = false, roll = false, jump = false, gravity = 1.0, interrupt_after = -1.0, cancel_after = HURT_TIME },
 }
 #endregion
