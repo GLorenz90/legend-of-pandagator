@@ -5,8 +5,8 @@ const MAX_VELOCITY := 25.0;
 const MAX_COYOTE_TIME := 0.15;
 const MAX_INPUT_BUFFER_TIME := 0.2;
 
-const BASE_WALK_SPEED := 7.5;
-const BASE_ROLL_SPEED := 15.0;
+const BASE_WALK_SPEED := 6;
+const BASE_ROLL_SPEED := 12.0;
 const BASE_ROLL_TIME := 0.4;
 const BASE_JUMP_TIME := 0.08;
 const BASE_JUMP_VELOCITY := 200.0;

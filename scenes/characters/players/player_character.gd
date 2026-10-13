@@ -46,7 +46,8 @@ func _process_inputs() -> void:
 func _process_movement(delta: float) -> void:
   var adjusted_move_speed := CharStats.WALK_SPEED;
   # do not include y so that it's not adjusted by move speed
-  _move_vector = Vector3(_in_move.y, 0.0, _in_move.x).normalized() * adjusted_move_speed
+  # TODO: Interpolate
+  _move_vector = Vector3(_in_move.y, 0.0, _in_move.x).normalized() * adjusted_move_speed;
   _move_vector.y = velocity.y;
 
   velocity = _move_vector;
