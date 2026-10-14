@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 #endregion =========================================================================================
 
 #region PRIVATE FUNCTIONS ==========================================================================
-func _process_inputs(delta: float) -> void:
+func _process_inputs(_delta: float) -> void:
   _input_buffer = Global.input_manager.p1_input_buffer if is_p1 else Global.input_manager.p2_input_buffer;
   _in_move = _input_buffer[Enums.INPUT_BUFFER.MOVE];
   _in_roll = _input_buffer[Enums.INPUT_BUFFER.ROLL_PRESSED];
@@ -57,11 +57,9 @@ func _process_inputs(delta: float) -> void:
   _in_next_item = _input_buffer[Enums.INPUT_BUFFER.NEXT_ITEM_PRESSED];
   _in_prev_item = _input_buffer[Enums.INPUT_BUFFER.PREV_ITEM_PRESSED];
 
-  # A press stays "live" for MAX_INPUT_BUFFER_TIME so it can fire as soon as the
-  # current action allows it, instead of being dropped mid-swing.
-  _buf_roll = 0.0 if _in_roll else _buf_roll + delta;
-  _buf_attack = 0.0 if _in_attack else _buf_attack + delta;
-  _buf_interact = 0.0 if _in_interact else _buf_interact + delta;
+  _buf_roll = _input_buffer[Enums.INPUT_BUFFER.ROLL_HELD_TIME];
+  _buf_attack = _input_buffer[Enums.INPUT_BUFFER.ATTACK_HELD_TIME];
+  _buf_interact = _input_buffer[Enums.INPUT_BUFFER.INTERACT_HELD_TIME];
 #/_process_inputs
 
 func _is_buffered(time_since_press: float) -> bool:
@@ -165,28 +163,25 @@ func _process_action(delta: float) -> void:
 
   # interrupt_after: the action may be cut short by any action its rules allow.
   # Roll is checked first so a dodge always wins over a swing pressed the same frame.
-  if _is_buffered(_buf_roll) && _can_interrupt_into("roll", Enums.CHAR_STATES.ROLLING):
-    _buf_roll = INF;
+  if _in_roll && _is_buffered(_buf_roll) && _can_interrupt_into("roll", Enums.CHAR_STATES.ROLLING):
     _start_roll();
     return;
   #/if
 
   # TODO: Jump. The rules support it ("jump" flag, e.g. roll -> jump), but there's no input yet.
 
-  if _is_buffered(_buf_attack):
+  if _in_attack && _is_buffered(_buf_attack):
     var next_attack: Enums.CHAR_STATES = _next_attack_state();
     if _can_interrupt_into("attack", next_attack):
-      _buf_attack = INF;
       _start_attack(next_attack);
       return;
     #/if
   #/if
 
   # Interact only starts from FREE, on the ground, and only if there's something to interact with.
-  if _is_buffered(_buf_interact) && _action == Enums.CHAR_STATES.FREE && is_on_floor():
+  if _in_interact && _is_buffered(_buf_interact) && _action == Enums.CHAR_STATES.FREE && is_on_floor():
     var target := _find_interactable();
     if target:
-      _buf_interact = INF;
       _invulnerable = true;
       _set_action(Enums.CHAR_STATES.INTERACT);
       # TODO: target.interact(self), which calls end_interact() when it's done

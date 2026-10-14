@@ -3,11 +3,13 @@ class_name Character;
 
 #region PRIVATE VARS =============================================================
 var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity");
+@export var debug := false;
 @export var _max_health := 1;
 @export var _cur_health := 1:
   set(value):
     _cur_health = clampi(value, 0, _max_health);
 @export var _invulnerable = false;
+@export var _dodging = false;
 #endregion
 
 #region PUBLIC VARS =============================================================
@@ -16,6 +18,8 @@ var _gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity");
 
 #region BUILT IN ===================================================================================
 func _ready() -> void:
+  if(debug):
+    print("gravity: " + str(_gravity));
   pass
 #/_ready
 
@@ -28,7 +32,7 @@ func _physics_process(_delta: float) -> void:
 
 #region PRIVATE ====================================================================================
 func _handle_damage(from_location := Vector3.FORWARD) -> void:
-  #override me
+  print(from_location);
   pass
 #/_damage_recoil()
 
@@ -39,6 +43,12 @@ func _die():
 #endregion =========================================================================================
 
 #region PUBLIC =====================================================================================
+func hit(value: int, from_location := Vector3.FORWARD) -> void:
+  if( !_dodging):
+    damage(value, from_location);
+  #/if
+#/hit
+
 func damage(value: int, from_location := Vector3.FORWARD) -> void:
   if($InvulnTimer.is_stopped() && !_invulnerable):
     _cur_health -= value;

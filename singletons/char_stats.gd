@@ -6,7 +6,7 @@ const MAX_COYOTE_TIME := 0.15;
 const MAX_INPUT_BUFFER_TIME := 0.2;
 
 const BASE_WALK_SPEED := 6;
-const BASE_ROLL_SPEED := 12.0;
+const BASE_ROLL_SPEED := 15.0;
 const BASE_JUMP_TIME := 0.08;
 const BASE_JUMP_VELOCITY := 200.0;
 const BASE_HURT_VELOCITY := 150.0;
@@ -15,7 +15,7 @@ const BASE_MAX_HEALTH := 6;
 const HURT_TIME := .75;
 const INVULN_TIME := 2.0;
 const HURT_KNOCKBACK_SPEED := 8.0;
-const ROLL_TIME := 0.5;
+const ROLL_TIME := 0.3;
 
 var ACTION_RULES = {
   # Free action rules, these can interrupt each other sometimes, and interact with each other
@@ -25,7 +25,7 @@ var ACTION_RULES = {
   Enums.CHAR_STATES.SWORD_2:    { move = 0.3, ground_only = false, turn = false, attack = false, roll = true, jump = true, gravity = 0.4, interrupt_after = 0.2, cancel_after = 0.3 },
   # Special states with their own rules to enter and exit
   Enums.CHAR_STATES.INIT:       { move = 0.0, ground_only = false, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
-  Enums.CHAR_STATES.INTERACT: { move = 0.0, ground_only = true, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
+  Enums.CHAR_STATES.INTERACT:   { move = 0.0, ground_only = true, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
   Enums.CHAR_STATES.HURT:       { move = 0.0, ground_only = false, turn = false, attack = false, roll = false, jump = false, gravity = 1.0, interrupt_after = -1.0, cancel_after = HURT_TIME },
 }
 #endregion

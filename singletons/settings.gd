@@ -15,7 +15,7 @@ var defaultAntialiasing: Viewport.MSAA = Viewport.MSAA.MSAA_4X;
 
 var antialiasing := defaultAntialiasing;
 
-var default_stick_deadzone := 0.5
+var default_stick_deadzone := 0.25
 var stick_deadzone := default_stick_deadzone;
 
 var config = ConfigFile.new();

@@ -7,13 +7,14 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_emk0u"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_hq71a"]
-radius = 0.2548828
-height = 0.6948242
+radius = 0.37646484
+height = 0.7529297
 
 [node name="PlayerCharacter" unique_id=1869617066 instance=ExtResource("1_7gakc")]
 script = ExtResource("1_h3p8d")
 char_type = 0
 is_p1 = true
+debug_actions = false
 
 [node name="Collision" parent="." index="0" unique_id=1139686417]
 shape = ExtResource("2_ai33d")
@@ -23,5 +24,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CapsuleMesh_emk0u")
 
 [node name="Face" type="MeshInstance3D" parent="Model" parent_id_path=PackedInt32Array(544756948) index="1" unique_id=68170083]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7819175, -0.5244089)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.159998, -0.3498455)
 mesh = SubResource("CapsuleMesh_hq71a")
