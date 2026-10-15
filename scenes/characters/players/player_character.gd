@@ -9,6 +9,8 @@ signal action_changed(prev_action: Enums.CHAR_STATES, next_action: Enums.CHAR_ST
 
 const SHAPE_NORMAL: CapsuleShape3D = preload("res://resources/shapes/player_shape_normal.tres");
 const SHAPE_ROLL: CapsuleShape3D = preload("res://resources/shapes/player_shape_roll.tres");
+const BODY_NORMAL: CapsuleMesh = preload("res://resources/meshes/test_body.tres");
+const BODY_ROLL: CapsuleMesh = preload("res://resources/meshes/test_body_short.tres");
 
 #region PRIVATE VARS ===============================================================================
 var _input_buffer;
@@ -31,6 +33,7 @@ var _action: Enums.CHAR_STATES = Enums.CHAR_STATES.INIT;
 var _action_time := 0.0;
 var _cur_action_duration := -1.0;
 var _recoil_dir := Vector3.ZERO;
+var _air_momentum := Vector3.ZERO;
 #endregion =========================================================================================
 
 #region BUILT IN FUNCTIONS =========================================================================
@@ -55,7 +58,7 @@ func _physics_process(delta: float) -> void:
 func _process_inputs(_delta: float) -> void:
   _input_buffer = Global.input_manager.p1_input_buffer if is_p1 else Global.input_manager.p2_input_buffer;
   _in_move = _input_buffer[Enums.INPUT_BUFFER.MOVE];
-  _in_jump = _input_buffer[Enums.INPUT_BUFFER.JUMP_PRESSED];
+  _in_jump = _input_buffer[Enums.INPUT_BUFFER.JUMP_HELD];
   _in_roll = _input_buffer[Enums.INPUT_BUFFER.ROLL_PRESSED];
   _in_attack = _input_buffer[Enums.INPUT_BUFFER.ATTACK_PRESSED];
   _in_interact = _input_buffer[Enums.INPUT_BUFFER.INTERACT_PRESSED];
@@ -90,7 +93,14 @@ func _process_movement(delta: float) -> void:
       horizontal = _recoil_dir * CharStats.HURT_KNOCKBACK_SPEED * falloff;
     _:
       # TODO: Interpolate
-      horizontal = _move_dir().normalized() * CharStats.WALK_SPEED * cur_rule.move;
+      var walk := _move_dir().normalized() * CharStats.WALK_SPEED;
+      if _air_momentum.is_zero_approx():
+        horizontal = walk;
+      else:
+        # Carried momentum holds its speed and direction. The stick can nudge it sideways
+        # or pull back to shorten the jump, but can't push past the carried speed.
+        horizontal = (_air_momentum + walk).limit_length(_air_momentum.length());
+      #/if
   #/match
 
   velocity.x = horizontal.x;
@@ -103,6 +113,10 @@ func _process_movement(delta: float) -> void:
     velocity.y = clamp(velocity.y - (_gravity * delta), -Global.MAX_Y_SPEED, Global.MAX_Y_SPEED);
   #/if
   move_and_slide();
+
+  if is_on_floor():
+    _air_momentum = Vector3.ZERO;
+  #/if
 
   if cur_rule.turn && !_in_move.is_zero_approx():
     # TODO: Interpolate
@@ -165,8 +179,11 @@ func _set_state(target: Enums.CHAR_STATES) -> void:
   # Swap to the short capsule while rolling, keeping its base on the floor.
   if target == Enums.CHAR_STATES.ROLLING || prev == Enums.CHAR_STATES.ROLLING:
     var shape: CapsuleShape3D = SHAPE_ROLL if target == Enums.CHAR_STATES.ROLLING else SHAPE_NORMAL;
+    var mesh: CapsuleMesh = BODY_ROLL if target == Enums.CHAR_STATES.ROLLING else BODY_NORMAL;
     $Collision.shape = shape;
     $Collision.position.y = shape.height * 0.5;
+    $Model/Body.mesh = mesh;
+    $Model/Body.position.y  = $Collision.position.y;
   #/if
 
   match(target):
@@ -174,13 +191,14 @@ func _set_state(target: Enums.CHAR_STATES) -> void:
     Enums.CHAR_STATES.FREE, \
     Enums.CHAR_STATES.MIDAIR:
       pass;
-    Enums.CHAR_STATES.JUMPING: _start_jump();
+    Enums.CHAR_STATES.JUMPING: _start_jump(prev);
     Enums.CHAR_STATES.ROLLING: _start_roll();
     Enums.CHAR_STATES.INTERACT: _start_interact();
     Enums.CHAR_STATES.SWORD_1, \
     Enums.CHAR_STATES.SWORD_2:
       _start_attack();
-    Enums.CHAR_STATES.HURT: pass;
+    Enums.CHAR_STATES.HURT:
+      _air_momentum = Vector3.ZERO;
     _: pass;
 
   if debug_actions:
@@ -200,7 +218,8 @@ func _process_action(delta: float) -> void:
   if _is_neutral_state(_action):
     _return_to_neutral_state();
 
-  if (_action == Enums.CHAR_STATES.JUMPING) && velocity.y <= 0:
+  if (_action == Enums.CHAR_STATES.JUMPING) && (velocity.y <= 0 || !_in_jump):
+    velocity.y = velocity.y/2.0;
     _return_to_neutral_state();
 
   if _in_roll && _is_buffered(_buf_roll): _attempt_action(Enums.CHAR_STATES.ROLLING);
@@ -219,8 +238,12 @@ func _next_attack_state() -> Enums.CHAR_STATES:
   return Enums.CHAR_STATES.SWORD_2 if _action == Enums.CHAR_STATES.SWORD_1 else Enums.CHAR_STATES.SWORD_1;
 #/_next_attack_state
 
-func _start_jump() -> void:
+func _start_jump(prev: Enums.CHAR_STATES) -> void:
   velocity.y = CharStats.JUMP_VELOCITY;
+  # Jumping out of a roll keeps the roll's speed and direction until we land.
+  if prev == Enums.CHAR_STATES.ROLLING:
+    _air_momentum = -global_basis.z * CharStats.ROLL_SPEED;
+  #/if
 #/_start_jump
 
 func _start_roll() -> void:
