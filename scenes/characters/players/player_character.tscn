@@ -20,5 +20,9 @@ shape = ExtResource("2_ai33d")
 
 [node name="Body" type="MeshInstance3D" parent="Model" parent_id_path=PackedInt32Array(544756948) index="0" unique_id=841814159]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 1.0043828, 0)
+cast_shadow = 0
 mesh = ExtResource("4_hq71a")
 surface_material_override/0 = SubResource("StandardMaterial3D_hq71a")
+
+[node name="Decal" parent="." index="4" unique_id=744139969]
+lower_fade = 0.3

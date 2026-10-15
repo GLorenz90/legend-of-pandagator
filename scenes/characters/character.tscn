@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b6q1xfhb531nx"]
 
 [ext_resource type="Script" uid="uid://b16bxr25sb5cl" path="res://scenes/characters/character.gd" id="1_52avm"]
+[ext_resource type="Texture2D" uid="uid://bf3gdxbmyycy5" path="res://images/shadow.png" id="2_1bdar"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ra2i3"]
 
@@ -25,3 +26,10 @@ one_shot = true
 [node name="HealTimer" type="Timer" parent="." unique_id=345365939]
 wait_time = 0.5
 one_shot = true
+
+[node name="Decal" type="Decal" parent="." unique_id=744139969]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4.5, 0)
+size = Vector3(1, 10, 1)
+texture_albedo = ExtResource("2_1bdar")
+modulate = Color(0, 0, 0, 1)
+lower_fade = 10.042674

@@ -5,9 +5,21 @@
 [ext_resource type="Script" uid="uid://dhaq5k2cyv6ak" path="res://scenes/input_manager.gd" id="3_jyhfs"]
 [ext_resource type="PackedScene" uid="uid://blcewvxyjg61h" path="res://scenes/characters/players/player_character.tscn" id="4_jyhfs"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_tipki"]
+sky_top_color = Color(0.20552272, 0.43556347, 0.8057423, 1)
+sky_horizon_color = Color(0.43361023, 0.5078178, 0.68277293, 1)
+ground_bottom_color = Color(0.13399999, 0.2, 0.1373, 1)
+ground_horizon_color = Color(0.50645834, 0.65, 0.48749998, 1)
+
+[sub_resource type="Sky" id="Sky_tbgi4"]
+sky_material = SubResource("ProceduralSkyMaterial_tipki")
+
 [sub_resource type="Environment" id="Environment_ra2i3"]
-ambient_light_source = 3
-ambient_light_color = Color(0.38039216, 0.38039216, 0.23921569, 1)
+background_mode = 2
+sky = SubResource("Sky_tbgi4")
+ambient_light_source = 2
+ambient_light_color = Color(1, 0.99358755, 0.8790198, 1)
+ambient_light_energy = 0.38
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4gaj"]
 albedo_color = Color(0, 0.27450982, 0.09411765, 1)
@@ -41,11 +53,11 @@ shadow_enabled = true
 transform = Transform3D(1, 0, 0, 0, 0.555278, 0.8316648, 0, -0.8316648, 0.555278, 0, 15.810549, 20.598114)
 
 [node name="Character" parent="Gym" unique_id=1869617066 instance=ExtResource("4_jyhfs")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.06983423, 0, 0.023679733)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.068, 0)
 platform_on_leave = 0
 
 [node name="Floor" type="StaticBody3D" parent="Gym" unique_id=629967807]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+transform = Transform3D(2, 0, 0, 0, 21.971724, 0, 0, 0, 2, 0, 0, 0)
 collision_mask = 0
 metadata/_edit_group_ = true
 
@@ -55,6 +67,7 @@ mesh = SubResource("BoxMesh_ra2i3")
 
 [node name="Collision" type="CollisionShape3D" parent="Gym/Floor" unique_id=411187225]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+visible = false
 shape = SubResource("BoxShape3D_ra2i3")
 
 [node name="GoodSlope" type="StaticBody3D" parent="Gym" unique_id=2005878671]
