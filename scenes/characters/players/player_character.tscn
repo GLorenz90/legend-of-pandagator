@@ -14,7 +14,7 @@ height = 0.7529297
 script = ExtResource("1_h3p8d")
 char_type = 0
 is_p1 = true
-debug_actions = false
+debug_actions = true
 
 [node name="Collision" parent="." index="0" unique_id=1139686417]
 shape = ExtResource("2_ai33d")

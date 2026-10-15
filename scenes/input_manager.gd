@@ -9,6 +9,7 @@ enum INPUTS {
   MOVE_DOWN_KEYBOARD,
   MOVE_LEFT_KEYBOARD,
   MOVE_RIGHT_KEYBOARD,
+  JUMP_KEYBOARD,
   ROLL_KEYBOARD,
   ATTACK_KEYBOARD,
   INTERACT_KEYBOARD,
@@ -20,6 +21,7 @@ enum INPUTS {
   MOVE_DOWN_GAMEPAD,
   MOVE_LEFT_GAMEPAD,
   MOVE_RIGHT_GAMEPAD,
+  JUMP_GAMEPAD,
   ROLL_GAMEPAD,
   ATTACK_GAMEPAD,
   INTERACT_GAMEPAD,
@@ -30,6 +32,7 @@ enum INPUTS {
 
 enum ACTIONS {
   MOVE,
+  JUMP,
   ROLL,
   ATTACK,
   INTERACT,
@@ -43,6 +46,7 @@ var template_input_map: Dictionary[INPUTS, InputEvent] = {
   INPUTS.MOVE_DOWN_KEYBOARD: null,
   INPUTS.MOVE_LEFT_KEYBOARD: null,
   INPUTS.MOVE_RIGHT_KEYBOARD: null,
+  INPUTS.JUMP_KEYBOARD: null,
   INPUTS.ROLL_KEYBOARD: null,
   INPUTS.ATTACK_KEYBOARD: null,
   INPUTS.INTERACT_KEYBOARD: null,
@@ -54,6 +58,7 @@ var template_input_map: Dictionary[INPUTS, InputEvent] = {
   INPUTS.MOVE_DOWN_GAMEPAD: null,
   INPUTS.MOVE_LEFT_GAMEPAD: null,
   INPUTS.MOVE_RIGHT_GAMEPAD: null,
+  INPUTS.JUMP_GAMEPAD: null,
   INPUTS.ROLL_GAMEPAD: null,
   INPUTS.ATTACK_GAMEPAD: null,
   INPUTS.INTERACT_GAMEPAD: null,
@@ -65,6 +70,7 @@ var template_input_map: Dictionary[INPUTS, InputEvent] = {
 # Raw data used to calculate the current state
 var template_action_states: Dictionary = {
   ACTIONS.MOVE: Vector2(0.0, 0.0),
+  ACTIONS.JUMP: false,
   ACTIONS.ROLL: false,
   ACTIONS.ATTACK: false,
   ACTIONS.INTERACT: false,
@@ -76,6 +82,10 @@ var template_action_states: Dictionary = {
 # Buffer that is used in actual scripts
 var template_input_buffer: Dictionary = {
   Enums.INPUT_BUFFER.MOVE: Vector2(0.0, 0.0),
+
+  Enums.INPUT_BUFFER.JUMP_PRESSED: false,
+  Enums.INPUT_BUFFER.JUMP_HELD: false,
+  Enums.INPUT_BUFFER.JUMP_HELD_TIME: 0.0,
 
   Enums.INPUT_BUFFER.ROLL_PRESSED: false,
   Enums.INPUT_BUFFER.ROLL_HELD: false,
@@ -134,7 +144,8 @@ func setup_default_controls() -> void:
   set_key_action(1, INPUTS.MOVE_DOWN_KEYBOARD, KEY_S);
   set_key_action(1, INPUTS.MOVE_LEFT_KEYBOARD, KEY_A);
   set_key_action(1, INPUTS.MOVE_RIGHT_KEYBOARD, KEY_D);
-  set_key_action(1, INPUTS.ROLL_KEYBOARD, KEY_SPACE);
+  set_key_action(1, INPUTS.JUMP_KEYBOARD, KEY_SPACE);
+  set_key_action(1, INPUTS.ROLL_KEYBOARD, KEY_CTRL);
   set_key_action(1, INPUTS.ATTACK_KEYBOARD, KEY_Q);
   set_key_action(1, INPUTS.INTERACT_KEYBOARD, KEY_E);
   set_key_action(1, INPUTS.USE_ITEM_KEYBOARD, KEY_F);
@@ -146,6 +157,7 @@ func setup_default_controls() -> void:
   set_joypad_axis_action(1, INPUTS.MOVE_DOWN_GAMEPAD, JOY_AXIS_LEFT_Y, 1);
   set_joypad_axis_action(1, INPUTS.MOVE_LEFT_GAMEPAD, JOY_AXIS_LEFT_X, -1);
   set_joypad_axis_action(1, INPUTS.MOVE_RIGHT_GAMEPAD, JOY_AXIS_LEFT_X, 1);
+  set_joypad_button_action(1, INPUTS.JUMP_GAMEPAD, JOY_BUTTON_A);
   set_joypad_button_action(1, INPUTS.ROLL_GAMEPAD, JOY_BUTTON_B);
   set_joypad_button_action(1, INPUTS.ATTACK_GAMEPAD, JOY_BUTTON_X);
   set_joypad_button_action(1, INPUTS.INTERACT_GAMEPAD, JOY_BUTTON_A);
@@ -158,6 +170,7 @@ func setup_default_controls() -> void:
   set_key_action(2, INPUTS.MOVE_DOWN_KEYBOARD, KEY_S);
   set_key_action(2, INPUTS.MOVE_LEFT_KEYBOARD, KEY_A);
   set_key_action(2, INPUTS.MOVE_RIGHT_KEYBOARD, KEY_D);
+  set_key_action(2, INPUTS.JUMP_KEYBOARD, KEY_SPACE);
   set_key_action(2, INPUTS.ROLL_KEYBOARD, KEY_SPACE);
   set_key_action(2, INPUTS.ATTACK_KEYBOARD, KEY_Q);
   set_key_action(2, INPUTS.INTERACT_KEYBOARD, KEY_E);
@@ -170,6 +183,7 @@ func setup_default_controls() -> void:
   set_joypad_axis_action(2, INPUTS.MOVE_DOWN_GAMEPAD, JOY_AXIS_LEFT_Y, 1);
   set_joypad_axis_action(2, INPUTS.MOVE_LEFT_GAMEPAD, JOY_AXIS_LEFT_X, -1);
   set_joypad_axis_action(2, INPUTS.MOVE_RIGHT_GAMEPAD, JOY_AXIS_LEFT_X, 1);
+  set_joypad_button_action(2, INPUTS.JUMP_GAMEPAD, JOY_BUTTON_A);
   set_joypad_button_action(2, INPUTS.ROLL_GAMEPAD, JOY_BUTTON_B);
   set_joypad_button_action(2, INPUTS.ATTACK_GAMEPAD, JOY_BUTTON_X);
   set_joypad_button_action(2, INPUTS.INTERACT_GAMEPAD, JOY_BUTTON_A);
@@ -190,6 +204,7 @@ func process_action_state(player: int) -> void:
   player_cur_action_state[ACTIONS.MOVE] = Vector2(movement_x, movement_y);
 
   var attack_pressed = is_action_pressed(player, INPUTS.ATTACK_KEYBOARD) || is_action_pressed(player, INPUTS.ATTACK_GAMEPAD);
+  var jump_pressed = is_action_pressed(player, INPUTS.JUMP_KEYBOARD) || is_action_pressed(player, INPUTS.JUMP_GAMEPAD);
   var roll_pressed = is_action_pressed(player, INPUTS.ROLL_KEYBOARD) || is_action_pressed(player, INPUTS.ROLL_GAMEPAD);
   var interact_pressed = is_action_pressed(player, INPUTS.INTERACT_KEYBOARD) || is_action_pressed(player, INPUTS.INTERACT_GAMEPAD);
   var use_item_pressed = is_action_pressed(player, INPUTS.USE_ITEM_KEYBOARD) || is_action_pressed(player, INPUTS.USE_ITEM_GAMEPAD);
@@ -197,6 +212,7 @@ func process_action_state(player: int) -> void:
   var prev_item_pressed = is_action_pressed(player, INPUTS.PREV_ITEM_KEYBOARD) || is_action_pressed(player, INPUTS.PREV_ITEM_GAMEPAD);
 
   player_cur_action_state[ACTIONS.ATTACK] = attack_pressed;
+  player_cur_action_state[ACTIONS.JUMP] = jump_pressed;
   player_cur_action_state[ACTIONS.ROLL] = roll_pressed;
   player_cur_action_state[ACTIONS.INTERACT] = interact_pressed;
   player_cur_action_state[ACTIONS.USE_ITEM] = use_item_pressed;
@@ -204,6 +220,7 @@ func process_action_state(player: int) -> void:
   player_cur_action_state[ACTIONS.PREV_ITEM] = prev_item_pressed;
 
   player_just_pressed_action_state[ACTIONS.ATTACK] = attack_pressed && !player_prev_action_state[ACTIONS.ATTACK];
+  player_just_pressed_action_state[ACTIONS.JUMP] = roll_pressed && !player_prev_action_state[ACTIONS.JUMP];
   player_just_pressed_action_state[ACTIONS.ROLL] = roll_pressed && !player_prev_action_state[ACTIONS.ROLL];
   player_just_pressed_action_state[ACTIONS.INTERACT] = interact_pressed && !player_prev_action_state[ACTIONS.INTERACT];
   player_just_pressed_action_state[ACTIONS.USE_ITEM] = use_item_pressed && !player_prev_action_state[ACTIONS.USE_ITEM];
@@ -218,6 +235,9 @@ func process_input_buffer(player: int, delta: float) -> void:
 
   var player_input_buffer = {
     Enums.INPUT_BUFFER.MOVE: player_cur_action_state[ACTIONS.MOVE],
+    Enums.INPUT_BUFFER.JUMP_PRESSED: player_just_pressed_action_state[ACTIONS.JUMP],
+    Enums.INPUT_BUFFER.JUMP_HELD: player_cur_action_state[ACTIONS.JUMP],
+    Enums.INPUT_BUFFER.JUMP_HELD_TIME: (prev_player_input_buffer[Enums.INPUT_BUFFER.JUMP_HELD_TIME] + delta) if player_cur_action_state[ACTIONS.JUMP] else 0.0,
     Enums.INPUT_BUFFER.ROLL_PRESSED: player_just_pressed_action_state[ACTIONS.ROLL],
     Enums.INPUT_BUFFER.ROLL_HELD: player_cur_action_state[ACTIONS.ROLL],
     Enums.INPUT_BUFFER.ROLL_HELD_TIME: (prev_player_input_buffer[Enums.INPUT_BUFFER.ROLL_HELD_TIME] + delta) if player_cur_action_state[ACTIONS.ROLL] else 0.0,

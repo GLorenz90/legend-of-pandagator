@@ -6,7 +6,7 @@ const MAX_COYOTE_TIME := 0.15;
 const MAX_INPUT_BUFFER_TIME := 0.2;
 
 const BASE_WALK_SPEED := 6;
-const BASE_ROLL_SPEED := 15.0;
+const BASE_ROLL_SPEED := 18.0;
 const BASE_JUMP_TIME := 0.08;
 const BASE_JUMP_VELOCITY := 200.0;
 const BASE_HURT_VELOCITY := 150.0;
@@ -17,16 +17,26 @@ const INVULN_TIME := 2.0;
 const HURT_KNOCKBACK_SPEED := 8.0;
 const ROLL_TIME := 0.3;
 
+# duration -1 means cannot be interrupted, and lasts forever. INF means it can always be interrupted
 var ACTION_RULES = {
-  # Free action rules, these can interrupt each other sometimes, and interact with each other
-  Enums.CHAR_STATES.FREE:       { move = 1.0, ground_only = false, turn = true, attack = true, roll = true, jump = true, gravity = 1.0, interrupt_after = 0.0, cancel_after = 0.0 },
-  Enums.CHAR_STATES.ROLLING:    { move = 0.0, ground_only = true, turn = false, attack = true, roll = false, jump = true, gravity = 1.0, interrupt_after = ROLL_TIME/2.0, cancel_after = ROLL_TIME },
-  Enums.CHAR_STATES.SWORD_1:    { move = 0.3, ground_only = false, turn = false, attack = true, roll = true, jump = true, gravity = 0.4, interrupt_after = 0.1, cancel_after = 0.2 },
-  Enums.CHAR_STATES.SWORD_2:    { move = 0.3, ground_only = false, turn = false, attack = false, roll = true, jump = true, gravity = 0.4, interrupt_after = 0.2, cancel_after = 0.3 },
+  # Neutral States
+  Enums.CHAR_STATES.INIT:       { flag = null, move = 0.0, ground_only = false,  turn = false, attack = false, roll = false, jump = false, interrupt_after = -1.0,            state_duration = INF },
+  Enums.CHAR_STATES.FREE:       { flag = null, move = 1.0, ground_only = true,   turn = true,  attack = true,  roll = true,  jump = true,  interrupt_after = 0.0,             state_duration = INF },
+  Enums.CHAR_STATES.MIDAIR:     { flag = null, move = 1.0, ground_only = false,  turn = true,  attack = true,  roll = false, jump = false, interrupt_after = 0.0,             state_duration = INF },
+
+  # Movements
+  Enums.CHAR_STATES.JUMPING:    { flag = "jump", move = 1.0, ground_only = true,   turn = true,  attack = true,  roll = false, jump = false, interrupt_after = 0.1,           state_duration = INF },
+  Enums.CHAR_STATES.ROLLING:    { flag = "roll", move = 0.0, ground_only = true,   turn = false, attack = true,  roll = false, jump = true,  interrupt_after = ROLL_TIME/2.0, state_duration = ROLL_TIME },
+
+  # Attacks
+  Enums.CHAR_STATES.SWORD_1:    { flag = "attack", move = 0.3, ground_only = false,  turn = false, attack = true,  roll = true,  jump = true,  interrupt_after = 0.1,         state_duration = 0.2 },
+  Enums.CHAR_STATES.SWORD_2:    { flag = "attack", move = 0.3, ground_only = false,  turn = false, attack = false, roll = true,  jump = true,  interrupt_after = 0.2,         state_duration = 0.3 },
+
+  # Abilities
+
   # Special states with their own rules to enter and exit
-  Enums.CHAR_STATES.INIT:       { move = 0.0, ground_only = false, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
-  Enums.CHAR_STATES.INTERACT:   { move = 0.0, ground_only = true, turn = false, attack = false, roll = false, jump = false, gravity = 0.0, interrupt_after = -1.0, cancel_after = -1.0 },
-  Enums.CHAR_STATES.HURT:       { move = 0.0, ground_only = false, turn = false, attack = false, roll = false, jump = false, gravity = 1.0, interrupt_after = -1.0, cancel_after = HURT_TIME },
+  Enums.CHAR_STATES.INTERACT:   { flag = null, move = 0.0, ground_only = true,   turn = false, attack = false, roll = false, jump = false, interrupt_after = -1.0,          state_duration = -1.0 },
+  Enums.CHAR_STATES.HURT:       { flag = null, move = 0.0, ground_only = false,  turn = false, attack = false, roll = false, jump = false, interrupt_after = -1.0,          state_duration = HURT_TIME },
 }
 #endregion
 

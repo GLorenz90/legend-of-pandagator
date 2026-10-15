@@ -37,9 +37,11 @@ window/stretch/aspect="expand"
 3d_physics/layer_1="terrain"
 3d_physics/layer_2="player"
 3d_physics/layer_3="enemy"
+3d_physics/layer_4="collectable"
 3d_physics/layer_5="hazard"
 3d_physics/layer_6="player_attack"
 3d_physics/layer_7="enemy_attack"
+3d_physics/layer_8="interactable"
 
 [physics]
 
