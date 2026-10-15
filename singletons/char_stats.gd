@@ -1,15 +1,15 @@
 extends Node
 
 #region CONSTANTS ==============================================================
-const MAX_VELOCITY := 25.0;
+const MAX_VELOCITY := 50.0;
 const MAX_COYOTE_TIME := 0.15;
 const MAX_INPUT_BUFFER_TIME := 0.2;
 
 const BASE_WALK_SPEED := 6;
 const BASE_ROLL_SPEED := 18.0;
 const BASE_JUMP_TIME := 0.08;
-const BASE_JUMP_VELOCITY := 200.0;
-const BASE_HURT_VELOCITY := 150.0;
+const BASE_JUMP_VELOCITY := 15.0;
+const BASE_HURT_VELOCITY := 18.0;
 const BASE_MAX_HEALTH := 6;
 
 const HURT_TIME := .75;
@@ -25,8 +25,8 @@ var ACTION_RULES = {
   Enums.CHAR_STATES.MIDAIR:     { flag = null, move = 1.0, ground_only = false,  turn = true,  attack = true,  roll = false, jump = false, interrupt_after = 0.0,             state_duration = INF },
 
   # Movements
-  Enums.CHAR_STATES.JUMPING:    { flag = "jump", move = 1.0, ground_only = true,   turn = true,  attack = true,  roll = false, jump = false, interrupt_after = 0.1,           state_duration = INF },
-  Enums.CHAR_STATES.ROLLING:    { flag = "roll", move = 0.0, ground_only = true,   turn = false, attack = true,  roll = false, jump = true,  interrupt_after = ROLL_TIME/2.0, state_duration = ROLL_TIME },
+  Enums.CHAR_STATES.JUMPING:    { flag = "jump", move = 1.0, ground_only = true,   turn = true,  attack = true,  roll = false, jump = false, interrupt_after = 0.0,           state_duration = INF },
+  Enums.CHAR_STATES.ROLLING:    { flag = "roll", move = 0.0, ground_only = true,   turn = false, attack = true,  roll = false, jump = true,  interrupt_after = 0.0,           state_duration = ROLL_TIME },
 
   # Attacks
   Enums.CHAR_STATES.SWORD_1:    { flag = "attack", move = 0.3, ground_only = false,  turn = false, attack = true,  roll = true,  jump = true,  interrupt_after = 0.1,         state_duration = 0.2 },

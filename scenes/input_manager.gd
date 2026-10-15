@@ -220,7 +220,7 @@ func process_action_state(player: int) -> void:
   player_cur_action_state[ACTIONS.PREV_ITEM] = prev_item_pressed;
 
   player_just_pressed_action_state[ACTIONS.ATTACK] = attack_pressed && !player_prev_action_state[ACTIONS.ATTACK];
-  player_just_pressed_action_state[ACTIONS.JUMP] = roll_pressed && !player_prev_action_state[ACTIONS.JUMP];
+  player_just_pressed_action_state[ACTIONS.JUMP] = jump_pressed && !player_prev_action_state[ACTIONS.JUMP];
   player_just_pressed_action_state[ACTIONS.ROLL] = roll_pressed && !player_prev_action_state[ACTIONS.ROLL];
   player_just_pressed_action_state[ACTIONS.INTERACT] = interact_pressed && !player_prev_action_state[ACTIONS.INTERACT];
   player_just_pressed_action_state[ACTIONS.USE_ITEM] = use_item_pressed && !player_prev_action_state[ACTIONS.USE_ITEM];

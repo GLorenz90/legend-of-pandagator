@@ -96,11 +96,11 @@ func _process_movement(delta: float) -> void:
   velocity.x = horizontal.x;
   velocity.z = horizontal.z;
 
-  if !is_on_floor():
-    if(velocity.y > -2.0): velocity.y = -2.0;
-    velocity.y = clamp(velocity.y - (_gravity * delta), -Global.MAX_Y_SPEED, Global.MAX_Y_SPEED);
-  else:
+  if is_on_floor() && velocity.y <= 0.0:
     velocity.y = 0.0;
+  else:
+    if velocity.y <= 0.0 && velocity.y > -2.5: velocity.y = -2.5;
+    velocity.y = clamp(velocity.y - (_gravity * delta), -Global.MAX_Y_SPEED, Global.MAX_Y_SPEED);
   #/if
   move_and_slide();
 
@@ -247,6 +247,7 @@ func _start_interact() -> void:
   var interacted = _find_interactable();
   if interacted != null:
     _invulnerable = true;
+    #interacted.interact();
   #/if
 #/_start_interact
 
