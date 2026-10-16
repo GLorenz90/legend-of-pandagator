@@ -8,7 +8,7 @@ class_name Attack
 ## True: tracks the attacker every physics frame. False: stays where it was spawned.
 @export var follow_attacker := true;
 ## Offset in the attacker's local space (-Z is forward, since characters use look_at).
-@export var spawn_offset := Vector3.FORWARD;
+@export var spawn_offset := Vector3.ZERO;
 
 var attacker: Character;
 #endregion =========================================================================================
@@ -18,7 +18,7 @@ var _hit_bodies: Array[Node3D] = [];
 var _time_alive := 0.0;
 
 @onready var area: Area3D = $Area;
-@onready var effect: Area3D = $Effect;
+@onready var effect: Node3D = $Effect;
 #endregion =========================================================================================
 
 #region BUILT IN ===================================================================================

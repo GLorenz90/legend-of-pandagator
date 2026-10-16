@@ -31,10 +31,12 @@ func _physics_process(_delta: float) -> void:
 #endregion =========================================================================================
 
 #region PRIVATE ====================================================================================
-func _spawn_attack(attack_scene: PackedScene) -> void:
+func _spawn_attack(attack_scene: PackedScene, duration: float) -> Attack:
   var attack: Attack = attack_scene.instantiate();
+  attack.lifetime = duration;
   attack.attacker = self;
   add_sibling(attack);
+  return attack;
 #/spawn_attack
 
 func _handle_damage(from_location := Vector3.FORWARD) -> void:

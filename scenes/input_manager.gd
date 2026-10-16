@@ -197,7 +197,7 @@ func process_action_state(player: int) -> void:
   var player_prev_action_state = p1_prev_action_state if player == 1 else p2_prev_action_state;
   var player_just_pressed_action_state = p1_just_pressed_action_state if player == 1 else p2_just_pressed_action_state;
 
-  player_prev_action_state.assign(player_cur_action_state);
+  player_prev_action_state = player_cur_action_state.duplicate();
 
   var movement_x = clampf(get_axis(player, INPUTS.MOVE_LEFT_KEYBOARD, INPUTS.MOVE_RIGHT_KEYBOARD) + get_axis(player, INPUTS.MOVE_LEFT_GAMEPAD, INPUTS.MOVE_RIGHT_GAMEPAD), -1.0, 1.0);
   var movement_y = clampf(get_axis(player, INPUTS.MOVE_UP_KEYBOARD, INPUTS.MOVE_DOWN_KEYBOARD) + get_axis(player, INPUTS.MOVE_UP_GAMEPAD, INPUTS.MOVE_DOWN_GAMEPAD), -1.0, 1.0);
@@ -212,7 +212,7 @@ func process_action_state(player: int) -> void:
   var prev_item_pressed = is_action_pressed(player, INPUTS.PREV_ITEM_KEYBOARD) || is_action_pressed(player, INPUTS.PREV_ITEM_GAMEPAD);
 
   player_cur_action_state[ACTIONS.ATTACK] = attack_pressed;
-  player_cur_action_state[ACTIONS.JUMP] = jump_pressed;player_prev_action_state = player_cur_action_state.duplicate();
+  player_cur_action_state[ACTIONS.JUMP] = jump_pressed;
   player_cur_action_state[ACTIONS.ROLL] = roll_pressed;
   player_cur_action_state[ACTIONS.INTERACT] = interact_pressed;
   player_cur_action_state[ACTIONS.USE_ITEM] = use_item_pressed;

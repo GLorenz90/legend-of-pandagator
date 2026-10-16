@@ -11,7 +11,8 @@ const SHAPE_NORMAL: CapsuleShape3D = preload("res://resources/shapes/player_shap
 const SHAPE_ROLL: CapsuleShape3D = preload("res://resources/shapes/player_shape_roll.tres");
 const BODY_NORMAL: CapsuleMesh = preload("res://resources/meshes/test_body.tres");
 const BODY_ROLL: CapsuleMesh = preload("res://resources/meshes/test_body_short.tres");
-var _swing_attack: PackedScene = preload("res://scenes/attacks/swing_attack.tscn");
+var _swing_attack_1: PackedScene = preload("res://scenes/attacks/swing_attack_1.tscn");
+var _swing_attack_2: PackedScene = preload("res://scenes/attacks/swing_attack_2.tscn");
 
 #region PRIVATE VARS ===============================================================================
 var _input_buffer;
@@ -264,9 +265,10 @@ func _start_attack() -> void:
     _face(_move_dir());
   #/if
   match(_action):
-    Enums.CHAR_STATES.SWORD_1, \
+    Enums.CHAR_STATES.SWORD_1:
+      _spawn_attack(_swing_attack_1, _get_current_rules().state_duration);
     Enums.CHAR_STATES.SWORD_2:
-      _spawn_attack(_swing_attack);
+      _spawn_attack(_swing_attack_2, _get_current_rules().state_duration);
   #/match
 #/_start_attack
 
