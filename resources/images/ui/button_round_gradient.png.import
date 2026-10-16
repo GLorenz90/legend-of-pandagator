@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dn50sitsu50nx"
-path="res://.godot/imported/Logo.png-412284a3bf4380fb5e3383db1c7c57e7.ctex"
+uid="uid://g2aclixmvvp3"
+path="res://.godot/imported/button_round_gradient.png-af20c072fe895d1dfdbbf8d0022dcd9c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/Logo.png"
-dest_files=["res://.godot/imported/Logo.png-412284a3bf4380fb5e3383db1c7c57e7.ctex"]
+source_file="res://resources/images/ui/button_round_gradient.png"
+dest_files=["res://.godot/imported/button_round_gradient.png-af20c072fe895d1dfdbbf8d0022dcd9c.ctex"]
 
 [params]
 

@@ -1,6 +1,6 @@
-[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://rwyee5iapmfj"]
+[gd_resource type="StyleBoxTexture" format=3 uid="uid://rwyee5iapmfj"]
 
-[ext_resource type="Texture2D" uid="uid://ddcwnj56iq0d0" path="res://images/ui/slide_horizontal_color_simple.png" id="1_mdx8e"]
+[ext_resource type="Texture2D" uid="uid://ddcwnj56iq0d0" path="res://resources/images/ui/slide_horizontal_color_simple.png" id="1_mdx8e"]
 
 [resource]
 content_margin_left = 6.0

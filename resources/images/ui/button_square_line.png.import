@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ddcwnj56iq0d0"
-path="res://.godot/imported/slide_horizontal_color_simple.png-7f0eed764998f651482320c81dd1e222.ctex"
+uid="uid://devrnd6av5byu"
+path="res://.godot/imported/button_square_line.png-8da18eeaf9ea5debf2c6d0779536ea1e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/ui/slide_horizontal_color_simple.png"
-dest_files=["res://.godot/imported/slide_horizontal_color_simple.png-7f0eed764998f651482320c81dd1e222.ctex"]
+source_file="res://resources/images/ui/button_square_line.png"
+dest_files=["res://.godot/imported/button_square_line.png-8da18eeaf9ea5debf2c6d0779536ea1e.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cskgygrmrh3jf"
-path="res://.godot/imported/slide_dot_color_simple.png-a2bf5ed1f7638ae4d79963fb5e8433e2.ctex"
+uid="uid://dn50sitsu50nx"
+path="res://.godot/imported/Logo.png-e916b1174e3d72aa89f156f6c0ccc7f6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/ui/slide_dot_color_simple.png"
-dest_files=["res://.godot/imported/slide_dot_color_simple.png-a2bf5ed1f7638ae4d79963fb5e8433e2.ctex"]
+source_file="res://resources/images/Logo.png"
+dest_files=["res://.godot/imported/Logo.png-e916b1174e3d72aa89f156f6c0ccc7f6.ctex"]
 
 [params]
 

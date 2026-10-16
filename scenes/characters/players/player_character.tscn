@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cylm4otlpxyoe" path="res://scenes/characters/players/player_character.gd" id="1_h3p8d"]
 [ext_resource type="Shape3D" uid="uid://70johm7o3e0g" path="res://resources/shapes/player_shape_normal.tres" id="2_ai33d"]
 [ext_resource type="CapsuleMesh" uid="uid://c0q23a4tc0hle" path="res://resources/meshes/test_body.tres" id="4_hq71a"]
-[ext_resource type="Texture2D" uid="uid://brkuhx7nvq20f" path="res://images/icon.svg" id="5_0dwey"]
+[ext_resource type="Texture2D" uid="uid://brkuhx7nvq20f" path="res://resources/images/icon.svg" id="5_0dwey"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hq71a"]
 albedo_texture = ExtResource("5_0dwey")

@@ -1,11 +1,11 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://domdts7824yny"]
+[gd_resource type="Theme" format=3 uid="uid://domdts7824yny"]
 
 [ext_resource type="FontFile" uid="uid://da32t0ijg8aw0" path="res://styles/MADE Tommy Soft Medium PERSONAL USE.otf" id="1_ck7vh"]
 [ext_resource type="StyleBox" uid="uid://b5e1xvg0pnil7" path="res://styles/components/btn_disabled.tres" id="2_cxy6w"]
 [ext_resource type="StyleBox" uid="uid://brjp5f4n7onaa" path="res://styles/components/btn_hover.tres" id="3_lgc5o"]
 [ext_resource type="StyleBox" uid="uid://dsouqwphbgbwv" path="res://styles/components/btn_normal.tres" id="4_delre"]
 [ext_resource type="StyleBox" uid="uid://bdc85a16gy32r" path="res://styles/components/btn_pressed.tres" id="5_sixhd"]
-[ext_resource type="Texture2D" uid="uid://cskgygrmrh3jf" path="res://images/ui/slide_dot_color_simple.png" id="6_hs5wa"]
+[ext_resource type="Texture2D" uid="uid://cskgygrmrh3jf" path="res://resources/images/ui/slide_dot_color_simple.png" id="6_hs5wa"]
 [ext_resource type="StyleBox" uid="uid://rwyee5iapmfj" path="res://styles/components/slider.tres" id="7_l0vq7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jcpk7"]

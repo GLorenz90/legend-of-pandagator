@@ -41,6 +41,10 @@ func _ready() -> void:
   super();
   _max_health = CharStats.MAX_HEALTH;
   _cur_health = CharStats.P1_CURRENT_HEALTH if is_p1 else CharStats.P2_CURRENT_HEALTH;
+  if is_p1:
+    Global.p1_char = self;
+  else:
+    Global.p2_char = self;
   _return_to_neutral_state();
 
   Signals.end_interaction.connect(_end_interact);

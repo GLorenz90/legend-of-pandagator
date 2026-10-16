@@ -1,6 +1,11 @@
 extends Node3D
 class_name Main
 
-func _ready() -> void:
+func _init() -> void:
   Global.main = self;
+#/_init
+
+func _ready() -> void:
+  Global.camera = $SubViewportContainer/SubViewport/CameraTarget/Camera;
+  Global.ui_layer = $SubViewportContainer/SubViewport/UiLayer;
 #/_ready
