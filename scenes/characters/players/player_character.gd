@@ -11,6 +11,7 @@ const SHAPE_NORMAL: CapsuleShape3D = preload("res://resources/shapes/player_shap
 const SHAPE_ROLL: CapsuleShape3D = preload("res://resources/shapes/player_shape_roll.tres");
 const BODY_NORMAL: CapsuleMesh = preload("res://resources/meshes/test_body.tres");
 const BODY_ROLL: CapsuleMesh = preload("res://resources/meshes/test_body_short.tres");
+var _swing_attack: PackedScene = preload("res://scenes/attacks/swing_attack.tscn");
 
 #region PRIVATE VARS ===============================================================================
 var _input_buffer;
@@ -262,7 +263,11 @@ func _start_attack() -> void:
   if !_in_move.is_zero_approx():
     _face(_move_dir());
   #/if
-  # TODO: Spawn / enable sword hitbox
+  match(_action):
+    Enums.CHAR_STATES.SWORD_1, \
+    Enums.CHAR_STATES.SWORD_2:
+      _spawn_attack(_swing_attack);
+  #/match
 #/_start_attack
 
 func _find_interactable() -> Node3D:

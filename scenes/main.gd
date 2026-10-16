@@ -8,4 +8,5 @@ func _init() -> void:
 func _ready() -> void:
   Global.camera = $SubViewportContainer/SubViewport/CameraTarget/Camera;
   Global.ui_layer = $SubViewportContainer/SubViewport/UiLayer;
+  Global.current_scene = $SubViewportContainer/SubViewport/Scene;
 #/_ready

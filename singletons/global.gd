@@ -12,6 +12,7 @@ var p1_char: PlayerCharacter;
 var p2_char: PlayerCharacter;
 var device_manager: DeviceManager;
 var input_manager: InputManager;
+var current_scene: Node3D;
 #endregion
 
 #region FUNCTIONS ==============================================================

@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://b3s7piianuio4"]
+
+[ext_resource type="PackedScene" uid="uid://doumgf3ijf78c" path="res://scenes/attacks/_/attack.tscn" id="1_ur8qv"]
+[ext_resource type="Script" uid="uid://bxa65yqun6jju" path="res://scenes/attacks/swing_attack.gd" id="2_bq2dv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bq2dv"]
+size = Vector3(1.5605469, 1, 0.8737793)
+
+[sub_resource type="SphereMesh" id="SphereMesh_lusrb"]
+radius = 0.15
+
+[node name="Attack" unique_id=889527476 instance=ExtResource("1_ur8qv")]
+script = ExtResource("2_bq2dv")
+swing_arc_degrees = 120.0
+
+[node name="Collision" parent="Area" parent_id_path=PackedInt32Array(539494428) index="0" unique_id=1706012814]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.43688965)
+shape = SubResource("BoxShape3D_bq2dv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Effect" parent_id_path=PackedInt32Array(1908251779) index="0" unique_id=1879135265]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5857298, 0, -0.34286493)
+mesh = SubResource("SphereMesh_lusrb")
